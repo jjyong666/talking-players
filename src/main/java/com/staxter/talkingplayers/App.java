@@ -1,6 +1,7 @@
 package com.staxter.talkingplayers;
 
 import com.staxter.talkingplayers.model.Player;
+import com.staxter.talkingplayers.service.config.MessageLimitConfig;
 import com.staxter.talkingplayers.service.manager.TalkManager;
 import com.staxter.talkingplayers.service.manager.TalkManagerMediator;
 import com.staxter.talkingplayers.service.message.receiver.MessageReceiver;
@@ -14,13 +15,23 @@ import com.staxter.talkingplayers.service.message.sender.MessageSenderImpl;
 public class App {
 
   /**
+   * The constant MESSAGE_LIMIT.
+   */
+  public static final String MESSAGE_LIMIT = "MESSAGE_LIMIT";
+
+  /**
    * The entry point of application.
    *
    * @param args the input arguments
    */
   public static void main(String[] args) {
 
-    TalkManager manager = new TalkManagerMediator();
+    if (System.getenv(MESSAGE_LIMIT) == null) {
+      System.out.println("Please define the env var " + MESSAGE_LIMIT);
+      return;
+    }
+
+    TalkManager manager = new TalkManagerMediator(new MessageLimitConfig());
     MessageSender sender = new MessageSenderImpl(manager);
     MessageReceiver receiver = new MessageReceiverImpl(sender);
 

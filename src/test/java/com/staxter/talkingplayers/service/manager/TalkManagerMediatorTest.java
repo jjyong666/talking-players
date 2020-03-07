@@ -10,18 +10,28 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import com.staxter.talkingplayers.model.Player;
+import com.staxter.talkingplayers.service.config.MessageLimitConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 class TalkManagerMediatorTest {
+
+  @Mock
+  private MessageLimitConfig config;
 
   private TalkManager manager;
 
   @BeforeEach
   void setUp() {
     initMocks(this);
+    mockMessageLimit();
 
-    manager = new TalkManagerMediator();
+    manager = new TalkManagerMediator(config);
+  }
+
+  private void mockMessageLimit() {
+    when(config.getMessageLimit()).thenReturn(3);
   }
 
   @Test

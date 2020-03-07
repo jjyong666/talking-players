@@ -1,14 +1,25 @@
 package com.staxter.talkingplayers.service.manager;
 
 import com.staxter.talkingplayers.model.Player;
+import com.staxter.talkingplayers.service.config.MessageLimitConfig;
 
 /**
  * The type Talk manager mediator.
  */
 public class TalkManagerMediator implements TalkManager {
 
+  private final MessageLimitConfig config;
   private Player initiator;
   private Player replier;
+
+  /**
+   * Instantiates a new Talk manager mediator.
+   *
+   * @param config the message limit config
+   */
+  public TalkManagerMediator(MessageLimitConfig config) {
+    this.config = config;
+  }
 
   @Override
   public void registerPlayer(Player player) {
@@ -47,7 +58,7 @@ public class TalkManagerMediator implements TalkManager {
   }
 
   private boolean validateMessageLimit(Player player) {
-    int messageLimit = 10;
+    int messageLimit = config.getMessageLimit();
     return player.getSentCount() >= messageLimit && player.getReceivedCount() >= messageLimit;
   }
 
