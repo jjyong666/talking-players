@@ -58,6 +58,20 @@
           <version>2.22.2</version>
         </plugin>
 
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addClasspath>true</addClasspath>
+                <classpathPrefix>lib/</classpathPrefix>
+                <mainClass>com.staxter.talkingplayers.App</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+
       </plugins>
     </pluginManagement>
   </build>
