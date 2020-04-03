@@ -1,6 +1,6 @@
-package com.staxter.talkingplayers.service.config;
+package com.staxter.talkingplayers.server.domain.config;
 
-import com.staxter.talkingplayers.App;
+import com.staxter.talkingplayers.server.App;
 
 /**
  * The type Message limit config.
