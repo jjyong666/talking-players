@@ -1,7 +1,10 @@
 package com.staxter.talkingplayers.server.domain.model;
 
-import com.staxter.talkingplayers.server.domain.Channel;
 import com.staxter.talkingplayers.server.domain.manager.TalkManager;
+import com.staxter.talkingplayers.shared.domain.Channel;
+import com.staxter.talkingplayers.shared.dto.ErrorMessage;
+import com.staxter.talkingplayers.shared.dto.PlayerMessage;
+import com.staxter.talkingplayers.shared.dto.ServerMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -51,11 +54,31 @@ class PlayerTest {
 
     @Test
     void receiveMessage_callsChannelSendMessage() {
-        var message = "asasas";
+        var message = new ServerMessage("asasas");
 
         player.receiveMessage(message);
 
         verify(channel).sendMessage(message);
+    }
+
+    @Test
+    void receiveMessage_incrementsReceivedCount_onlyWithPlayerMessages() {
+        var message = new PlayerMessage("asasas", "asasas");
+        int receivedCount = player.getReceivedCount();
+
+        player.receiveMessage(message);
+
+        assertEquals(receivedCount + 1, player.getReceivedCount());
+    }
+
+    @Test
+    void receiveMessage_otherMessagesDontIncreaseReceivedCount() {
+        var message = new ErrorMessage("asasas");
+        int receivedCount = player.getReceivedCount();
+
+        player.receiveMessage(message);
+
+        assertEquals(receivedCount, player.getReceivedCount());
     }
 
 }

@@ -1,10 +1,11 @@
 package com.staxter.talkingplayers.server.domain.model;
 
-import com.staxter.talkingplayers.server.domain.Channel;
 import com.staxter.talkingplayers.server.domain.manager.TalkManager;
+import com.staxter.talkingplayers.shared.domain.Channel;
+import com.staxter.talkingplayers.shared.dto.Message;
+import com.staxter.talkingplayers.shared.dto.PlayerMessage;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -13,7 +14,6 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @EqualsAndHashCode
-@RequiredArgsConstructor
 public class Player {
 
     private final TalkManager manager;
@@ -53,8 +53,15 @@ public class Player {
      *
      * @param message the message
      */
-    public void receiveMessage(String message) {
+    public void receiveMessage(Message message) {
+        if(message instanceof PlayerMessage) {
+            incrementReceivedCount();
+        }
         channel.sendMessage(message);
+    }
+
+    private void incrementReceivedCount() {
+        receivedCount++;
     }
 
     /**
@@ -62,13 +69,6 @@ public class Player {
      */
     public void incrementSentCount() {
         sentCount++;
-    }
-
-    /**
-     * Increment received count.
-     */
-    public void incrementReceivedCount() {
-        receivedCount++;
     }
 
     public String toString() {

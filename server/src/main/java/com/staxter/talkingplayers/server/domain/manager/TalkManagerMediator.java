@@ -2,6 +2,8 @@ package com.staxter.talkingplayers.server.domain.manager;
 
 import com.staxter.talkingplayers.server.domain.config.MessageLimitConfig;
 import com.staxter.talkingplayers.server.domain.model.Player;
+import com.staxter.talkingplayers.shared.dto.PlayerMessage;
+import com.staxter.talkingplayers.shared.dto.ServerMessage;
 
 /**
  * The type Talk manager mediator.
@@ -23,15 +25,15 @@ public class TalkManagerMediator implements TalkManager {
     public void sendMessage(Player from, Player to, String message) {
         int messageLimit = config.getMessageLimit();
         if (from.getSentCount() >= messageLimit) {
-            from.receiveMessage("You cannot send more messages");
+            from.receiveMessage(new ServerMessage("You cannot send more messages"));
             return;
         }
         if (to.getReceivedCount() >= messageLimit) {
-            from.receiveMessage(to.getName() + " cannot receive more messages");
+            from.receiveMessage(new ServerMessage(to.getName() + " cannot receive more messages"));
             return;
         }
 
-        to.receiveMessage(message);
+        to.receiveMessage(new PlayerMessage(message, from.getName()));
         from.incrementSentCount();
     }
 

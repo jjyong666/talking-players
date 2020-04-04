@@ -2,10 +2,13 @@ package com.staxter.talkingplayers.server.domain.manager;
 
 import com.staxter.talkingplayers.server.domain.config.MessageLimitConfig;
 import com.staxter.talkingplayers.server.domain.model.Player;
+import com.staxter.talkingplayers.shared.dto.PlayerMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -38,7 +41,11 @@ class TalkManagerMediatorTest {
 
         manager.sendMessage(initiator, replier, message);
 
-        verify(replier).receiveMessage(message);
+        var captor = ArgumentCaptor.forClass(PlayerMessage.class);
+        verify(replier).receiveMessage(captor.capture());
+        PlayerMessage playerMessage = captor.getValue();
+        assertEquals(message, playerMessage.getMessage());
+        assertEquals(initiator.getName(), playerMessage.getPlayer());
     }
 
     private Player buildPlayer(String name) {
