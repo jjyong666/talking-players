@@ -1,6 +1,6 @@
 package com.staxter.talkingplayers.server.domain.config;
 
-import com.staxter.talkingplayers.server.App;
+import com.staxter.talkingplayers.server.AppServer;
 
 /**
  * The type Message limit config.
@@ -13,7 +13,7 @@ public class MessageLimitConfig {
    * @return the message limit
    */
   public int getMessageLimit() {
-    return Integer.parseInt(System.getenv(App.MESSAGE_LIMIT));
+    return Integer.parseInt(System.getenv(AppServer.MESSAGE_LIMIT));
   }
 
 }
