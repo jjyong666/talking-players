@@ -1,7 +1,9 @@
 package com.staxter.talkingplayers.server.app;
 
+import com.staxter.talkingplayers.server.domain.manager.TalkManager;
 import com.staxter.talkingplayers.server.domain.model.Player;
 import com.staxter.talkingplayers.server.domain.repository.PlayerRepository;
+import com.staxter.talkingplayers.shared.domain.Channel;
 import com.staxter.talkingplayers.shared.dto.ErrorMessage;
 import com.staxter.talkingplayers.shared.dto.ServerMessage;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class ServerApplicationServiceImpl implements ServerApplicationService {
 
     private final PlayerRepository repository;
+    private final TalkManager manager;
 
     @Override
     public Player register(Player player, String name) {
@@ -68,6 +71,11 @@ public class ServerApplicationServiceImpl implements ServerApplicationService {
         return repository.listPlayers()
                 .stream()
                 .collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    @Override
+    public Player buildPlayer(String name, Channel channel) {
+        return new Player(name, channel, manager);
     }
 
 }

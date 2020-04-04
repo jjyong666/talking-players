@@ -1,6 +1,7 @@
 package com.staxter.talkingplayers.server.app;
 
 import com.staxter.talkingplayers.server.domain.model.Player;
+import com.staxter.talkingplayers.shared.domain.Channel;
 
 /**
  * The interface Server application service.
@@ -46,5 +47,14 @@ public interface ServerApplicationService {
      * @param player the player
      */
     void listPlayers(Player player);
+
+    /**
+     * Builds a player instance.
+     *
+     * @param name    the name
+     * @param channel the channel
+     * @return the player
+     */
+    Player buildPlayer(String name, Channel channel);
 
 }

@@ -2,6 +2,7 @@ package com.staxter.talkingplayers.server.api;
 
 import com.staxter.talkingplayers.server.app.ServerApplicationService;
 import com.staxter.talkingplayers.server.domain.model.Player;
+import com.staxter.talkingplayers.shared.domain.Channel;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -35,6 +36,11 @@ public class ServerControllerImpl implements ServerController {
     @Override
     public void deletePlayer(Player player) {
         service.delete(player);
+    }
+
+    @Override
+    public Player buildPlayer(String player, Channel channel) {
+        return service.buildPlayer(player, channel);
     }
 
 }

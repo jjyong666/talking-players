@@ -1,5 +1,6 @@
 package com.staxter.talkingplayers.server.app;
 
+import com.staxter.talkingplayers.server.domain.manager.TalkManager;
 import com.staxter.talkingplayers.server.domain.model.Player;
 import com.staxter.talkingplayers.server.domain.repository.PlayerRepository;
 import com.staxter.talkingplayers.shared.domain.Channel;
@@ -26,13 +27,16 @@ class ServerApplicationServiceImplTest {
     @Mock
     private PlayerRepository repository;
 
+    @Mock
+    private TalkManager manager;
+
     private ServerApplicationService service;
 
     @BeforeEach
     void setUp() {
         initMocks(this);
 
-        service = new ServerApplicationServiceImpl(repository);
+        service = new ServerApplicationServiceImpl(repository, manager);
     }
 
     @ParameterizedTest
@@ -158,6 +162,17 @@ class ServerApplicationServiceImplTest {
         String message = captor.getValue().getMessage();
         assertTrue(message.contains(name1));
         assertTrue(message.contains(name2));
+    }
+
+    @Test
+    void buildPlayer() {
+        var name = "asas";
+        var channel = mock(Channel.class);
+
+        var result = service.buildPlayer(name, channel);
+
+        assertEquals(name, result.getName());
+        assertEquals(channel, result.getChannel());
     }
 
 }

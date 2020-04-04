@@ -48,4 +48,13 @@ public interface ServerController {
      */
     void sendMessage(Player from, String to, String message);
 
+    /**
+     * Builds a new player instance.
+     *
+     * @param player  the player
+     * @param channel the channel
+     * @return the player
+     */
+    Player buildPlayer(String player, Channel channel);
+
 }
