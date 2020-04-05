@@ -3,11 +3,11 @@ package com.staxter.talkingplayers.shared.dto.command;
 import lombok.Getter;
 
 @Getter
-public class UnknownCommandMessage extends CommandMessage {
+public class UnknownCommandDto extends CommandDto {
 
     private static final long serialVersionUID = 752776147L;
 
-    public UnknownCommandMessage(String command) {
+    public UnknownCommandDto(String command) {
         super(command);
     }
 

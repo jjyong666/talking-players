@@ -2,13 +2,10 @@ package com.staxter.talkingplayers.shared.domain.command;
 
 import com.staxter.talkingplayers.shared.dto.command.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +31,7 @@ class CommandBuilderTest {
 
         var result = CommandBuilder.build(command).orElseThrow();
 
-        assertTrue(result instanceof UnknownCommandMessage);
+        assertTrue(result instanceof UnknownCommandDto);
     }
 
     @Test
@@ -42,9 +39,9 @@ class CommandBuilderTest {
         String command = "/register";
         String name = "name";
 
-        var result = (RegisterCommandMessage) CommandBuilder.build(String.format("%s %s", command, name)).orElseThrow();
+        var result = (RegisterCommandDto) CommandBuilder.build(String.format("%s %s", command, name)).orElseThrow();
 
-        assertEquals(command, result.getMessage());
+        assertEquals(command, result.getCommand());
         assertEquals(name, result.getName());
     }
 
@@ -61,11 +58,11 @@ class CommandBuilderTest {
         String name = "name";
         String message = "sdsds sdsd sd sdsd sdsd";
 
-        var result = (MsgCommandMessage) CommandBuilder.build(String.format("%s %s %s", command, name, message)).orElseThrow();
+        var result = (MessageCommandDto) CommandBuilder.build(String.format("%s %s %s", command, name, message)).orElseThrow();
 
-        assertEquals(command, result.getMessage());
+        assertEquals(command, result.getCommand());
         assertEquals(name, result.getName());
-        assertEquals(message, result.getMessageToSend());
+        assertEquals(message, result.getMessage());
     }
 
     @ParameterizedTest
@@ -80,27 +77,27 @@ class CommandBuilderTest {
     void build_returnsListCommand() {
         String command = "/list";
 
-        var result = (ListCommandMessage) CommandBuilder.build(command).orElseThrow();
+        var result = (ListCommandDto) CommandBuilder.build(command).orElseThrow();
 
-        assertEquals(command, result.getMessage());
+        assertEquals(command, result.getCommand());
     }
 
     @Test
     void build_returnsHelpCommand() {
         String command = "/help";
 
-        var result = (HelpCommandMessage) CommandBuilder.build(command).orElseThrow();
+        var result = (HelpCommandDto) CommandBuilder.build(command).orElseThrow();
 
-        assertEquals(command, result.getMessage());
+        assertEquals(command, result.getCommand());
     }
 
     @Test
     void build_returnsCloseCommand() {
         String command = "/close";
 
-        var result = (CloseCommandMessage) CommandBuilder.build(command).orElseThrow();
+        var result = (CloseCommandDto) CommandBuilder.build(command).orElseThrow();
 
-        assertEquals(command, result.getMessage());
+        assertEquals(command, result.getCommand());
     }
 
 }

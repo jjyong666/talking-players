@@ -1,6 +1,6 @@
 package com.staxter.talkingplayers.shared.infrastructure.channel;
 
-import com.staxter.talkingplayers.shared.dto.command.CloseCommandMessage;
+import com.staxter.talkingplayers.shared.dto.command.CloseCommandDto;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class SocketChannelTest {
     @SneakyThrows
     void sendMessage() {
         doNothing().when(stream).writeObject(any());
-        CloseCommandMessage message = new CloseCommandMessage();
+        CloseCommandDto message = new CloseCommandDto();
 
         channel.sendMessage(message);
 

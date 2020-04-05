@@ -12,37 +12,37 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommandBuilder {
 
-    public static Optional<CommandMessage> build(String command) {
+    public static Optional<CommandDto> build(String command) {
         if (command == null || command.isBlank())
             return Optional.empty();
 
         String[] processedCommand = command.split(" ");
 
         switch (processedCommand[0]) {
-            case RegisterCommandMessage.COMMAND:
+            case RegisterCommandDto.COMMAND:
                 return buildRegisterCommandMessage(processedCommand);
-            case MsgCommandMessage.COMMAND:
+            case MessageCommandDto.COMMAND:
                 return buildMessageCommandMessage(processedCommand);
-            case ListCommandMessage.COMMAND:
-                return Optional.of(new ListCommandMessage());
-            case HelpCommandMessage.COMMAND:
-                return Optional.of(new HelpCommandMessage());
-            case CloseCommandMessage.COMMAND:
-                return Optional.of(new CloseCommandMessage());
+            case ListCommandDto.COMMAND:
+                return Optional.of(new ListCommandDto());
+            case HelpCommandDto.COMMAND:
+                return Optional.of(new HelpCommandDto());
+            case CloseCommandDto.COMMAND:
+                return Optional.of(new CloseCommandDto());
             default:
-                return Optional.of(new UnknownCommandMessage(command));
+                return Optional.of(new UnknownCommandDto(command));
         }
     }
 
-    private static Optional<CommandMessage> buildRegisterCommandMessage(String[] command) {
+    private static Optional<CommandDto> buildRegisterCommandMessage(String[] command) {
         if (command.length != 2) {
             System.out.println(new ErrorMessage("Invalid Register command. Specify player name. Player name cannot contain spaces").toPrint());
             return Optional.empty();
         }
-        return Optional.of(new RegisterCommandMessage(command[1]));
+        return Optional.of(new RegisterCommandDto(command[1]));
     }
 
-    private static Optional<CommandMessage> buildMessageCommandMessage(String[] command) {
+    private static Optional<CommandDto> buildMessageCommandMessage(String[] command) {
         if (command.length < 3) {
             System.out.println(new ErrorMessage("Invalid Register command. Specify player name. Player name cannot contain spaces").toPrint());
             return Optional.empty();
@@ -51,7 +51,7 @@ public class CommandBuilder {
         String message = Arrays.stream(command)
                 .skip(2)
                 .collect(Collectors.joining(" "));
-        return Optional.of(new MsgCommandMessage(receptor, message));
+        return Optional.of(new MessageCommandDto(receptor, message));
     }
 
 }

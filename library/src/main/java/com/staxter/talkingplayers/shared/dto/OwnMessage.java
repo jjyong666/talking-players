@@ -1,6 +1,6 @@
 package com.staxter.talkingplayers.shared.dto;
 
-public class OwnMessage extends Message {
+public class OwnMessage extends MessageDto {
 
     private static final long serialVersionUID = 752776147L;
 
@@ -9,7 +9,7 @@ public class OwnMessage extends Message {
     }
 
     @Override
-    public String toString() {
+    public String toPrint() {
         return String.format("You: %s", message);
     }
 

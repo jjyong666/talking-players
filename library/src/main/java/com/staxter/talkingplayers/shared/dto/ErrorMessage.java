@@ -2,7 +2,7 @@ package com.staxter.talkingplayers.shared.dto;
 
 import com.staxter.talkingplayers.shared.util.ConsoleColors;
 
-public class ErrorMessage extends Message {
+public class ErrorMessage extends MessageDto {
 
     private static final long serialVersionUID = 752776147L;
 

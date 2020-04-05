@@ -4,7 +4,7 @@ import com.staxter.talkingplayers.shared.util.ConsoleColors;
 import lombok.Getter;
 
 @Getter
-public class PlayerMessage extends Message {
+public class PlayerMessage extends MessageDto {
 
     private static final long serialVersionUID = 752776147L;
 
