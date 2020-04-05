@@ -11,6 +11,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 
@@ -27,7 +28,7 @@ public class SocketServerImpl implements SocketServer {
     public void startServer(int port) throws IOException {
         System.out.println("The chat server is running on PORT: " + port);
 
-        try (var listener = new ServerSocket(port)) {
+        try (var listener = new ServerSocket(port, 50, InetAddress.getByAddress(new byte[]{0x00, 0x00, 0x00, 0x00}))) {
             while (true) {
                 var socket = listener.accept();
 
