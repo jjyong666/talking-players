@@ -1,6 +1,6 @@
 package com.staxter.talkingplayers.server.infrastructure.server;
 
-import com.staxter.talkingplayers.server.infrastructure.client.ClientHandler;
+import com.staxter.talkingplayers.server.infrastructure.client.PlayerHandler;
 import com.staxter.talkingplayers.server.infrastructure.command.invoker.CommandInvoker;
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,7 @@ public class SocketServerImpl implements SocketServer {
 
         try (var listener = new ServerSocket(port)) {
             while (true) {
-                executorService.execute(new ClientHandler(listener.accept(), commandInvoker));
+                executorService.execute(new PlayerHandler(listener.accept(), commandInvoker));
             }
         }
     }
