@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  talking-players-server:
+    build:
+      context: .
+    environment:
+      - MESSAGE_LIMIT=$MESSAGE_LIMIT
+      - JAR=server
+    expose:
+      - 50000
+
+  talking-players-client:
+    build:
+      context: .
+    depends_on:
+      - talking-players-server
+    network_mode: "service:talking-players-server"
+    environment:
+      - JAR=client
