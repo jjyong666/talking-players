@@ -6,8 +6,8 @@ name="talking-players"
 
 app="$1"
 if [[ -z "$app" ]]; then
-    echo "Please pass the name of the app you want to run: 'server' or 'client'"
-    exit 1
+  echo "Please pass the name of the app you want to run: 'server' or 'client'"
+  exit 1
 fi
 
 docker build -t "$name" .
@@ -20,7 +20,6 @@ if [[ "$app" == "server" ]]; then
   fi
 
   docker run --rm \
-    --network "$name" \
     -e JAR="$app" \
     -e MESSAGE_LIMIT="$message_limit" \
     -p 50000:50000 \
