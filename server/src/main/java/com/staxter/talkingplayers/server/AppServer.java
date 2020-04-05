@@ -30,12 +30,12 @@ public class AppServer {
             return;
         }
 
-        var controller = AppFactory.buildPlayerController();
+        var commandInvoker = AppFactory.buildCommandInvoker();
         ExecutorService pool = null;
         try {
             pool = Executors.newFixedThreadPool(20);
 
-            new SocketServerImpl(controller, pool).startServer(PORT);
+            new SocketServerImpl(commandInvoker, pool).startServer(PORT);
         } finally {
             if (pool != null)
                 pool.shutdown();

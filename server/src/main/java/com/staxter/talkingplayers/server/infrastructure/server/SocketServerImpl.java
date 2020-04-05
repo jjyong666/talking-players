@@ -1,7 +1,7 @@
 package com.staxter.talkingplayers.server.infrastructure.server;
 
-import com.staxter.talkingplayers.server.api.ServerController;
 import com.staxter.talkingplayers.server.infrastructure.client.ClientHandler;
+import com.staxter.talkingplayers.server.infrastructure.command.invoker.CommandInvoker;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 @RequiredArgsConstructor
 public class SocketServerImpl implements SocketServer {
 
-    private final ServerController controller;
+    private final CommandInvoker commandInvoker;
     private final ExecutorService executorService;
 
     @Override
@@ -23,7 +23,7 @@ public class SocketServerImpl implements SocketServer {
 
         try (var listener = new ServerSocket(port)) {
             while (true) {
-                executorService.execute(new ClientHandler(listener.accept(), controller));
+                executorService.execute(new ClientHandler(listener.accept(), commandInvoker));
             }
         }
     }

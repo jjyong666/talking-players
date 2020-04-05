@@ -8,18 +8,29 @@ import com.staxter.talkingplayers.server.domain.config.MessageLimitConfig;
 import com.staxter.talkingplayers.server.domain.manager.TalkManager;
 import com.staxter.talkingplayers.server.domain.manager.TalkManagerMediator;
 import com.staxter.talkingplayers.server.domain.repository.PlayerRepositoryInMemory;
+import com.staxter.talkingplayers.server.domain.service.PlayerService;
+import com.staxter.talkingplayers.server.domain.service.PlayerServiceImpl;
+import com.staxter.talkingplayers.server.infrastructure.command.invoker.CommandInvoker;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AppFactory {
 
-    public static ServerController buildPlayerController() {
+    public static CommandInvoker buildCommandInvoker() {
+        return new CommandInvoker(buildPlayerController());
+    }
+
+    private static ServerController buildPlayerController() {
         return new ServerControllerImpl(buildApplicationService());
     }
 
     private static ServerApplicationService buildApplicationService() {
-        return new ServerApplicationServiceImpl(buildPlayerRepository(), buildTalkManager());
+        return new ServerApplicationServiceImpl(buildPlayerService());
+    }
+
+    private static PlayerService buildPlayerService() {
+        return new PlayerServiceImpl(buildPlayerRepository(), buildTalkManager());
     }
 
     private static PlayerRepositoryInMemory buildPlayerRepository() {
