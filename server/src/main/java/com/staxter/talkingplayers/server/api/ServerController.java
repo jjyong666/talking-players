@@ -1,7 +1,9 @@
 package com.staxter.talkingplayers.server.api;
 
 import com.staxter.talkingplayers.server.domain.model.Player;
-import com.staxter.talkingplayers.shared.domain.Channel;
+import com.staxter.talkingplayers.shared.dto.MessageDto;
+
+import java.util.Set;
 
 /**
  * The interface Server controller.
@@ -17,6 +19,8 @@ public interface ServerController {
      */
     Player registerPlayer(Player player, String name);
 
+    void receiveMessage(Player player, MessageDto message);
+
     /**
      * Deletes a player.
      *
@@ -26,10 +30,8 @@ public interface ServerController {
 
     /**
      * List existing players.
-     *
-     * @param player the player
      */
-    void listPlayers(Player player);
+    Set<String> getPlayersNames();
 
     /**
      * Exists player.
@@ -47,14 +49,5 @@ public interface ServerController {
      * @param message the message
      */
     void sendMessage(Player from, String to, String message);
-
-    /**
-     * Builds a new player instance.
-     *
-     * @param player  the player
-     * @param channel the channel
-     * @return the player
-     */
-    Player buildPlayer(String player, Channel channel);
 
 }
