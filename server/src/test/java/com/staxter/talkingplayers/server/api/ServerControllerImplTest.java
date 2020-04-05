@@ -2,7 +2,6 @@ package com.staxter.talkingplayers.server.api;
 
 import com.staxter.talkingplayers.server.app.ServerApplicationService;
 import com.staxter.talkingplayers.server.domain.model.Player;
-import com.staxter.talkingplayers.shared.domain.Channel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -36,12 +35,11 @@ class ServerControllerImplTest {
     }
 
     @Test
-    void listPlayers() {
-        var player = mock(Player.class);
+    void getPlayersNames() {
 
-        controller.listPlayers(player);
+        controller.getPlayersNames();
 
-        verify(service).listPlayers(player);
+        verify(service).getPlayersNames();
     }
 
     @Test
@@ -73,14 +71,4 @@ class ServerControllerImplTest {
         verify(service).delete(player);
     }
 
-    @Test
-    void buildPlayer() {
-        var name = "asas";
-        var channel = mock(Channel.class);
-
-        controller.buildPlayer(name, channel);
-
-        verify(service).buildPlayer(name, channel);
-    }
-    
 }

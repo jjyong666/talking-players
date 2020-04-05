@@ -1,7 +1,9 @@
 package com.staxter.talkingplayers.server.app;
 
 import com.staxter.talkingplayers.server.domain.model.Player;
-import com.staxter.talkingplayers.shared.domain.Channel;
+import com.staxter.talkingplayers.shared.dto.MessageDto;
+
+import java.util.Set;
 
 /**
  * The interface Server application service.
@@ -42,19 +44,10 @@ public interface ServerApplicationService {
     void sendMessage(Player from, String to, String message);
 
     /**
-     * List existing players.
-     *
-     * @param player the player
+     * List existing players names.
      */
-    void listPlayers(Player player);
+    Set<String> getPlayersNames();
 
-    /**
-     * Builds a player instance.
-     *
-     * @param name    the name
-     * @param channel the channel
-     * @return the player
-     */
-    Player buildPlayer(String name, Channel channel);
+    void receiveMessage(Player player, MessageDto message);
 
 }

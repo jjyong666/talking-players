@@ -2,8 +2,10 @@ package com.staxter.talkingplayers.server.api;
 
 import com.staxter.talkingplayers.server.app.ServerApplicationService;
 import com.staxter.talkingplayers.server.domain.model.Player;
-import com.staxter.talkingplayers.shared.domain.Channel;
+import com.staxter.talkingplayers.shared.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
 
 /**
  * The type Server controller.
@@ -19,8 +21,8 @@ public class ServerControllerImpl implements ServerController {
     }
 
     @Override
-    public void listPlayers(Player player) {
-        service.listPlayers(player);
+    public Set<String> getPlayersNames() {
+        return service.getPlayersNames();
     }
 
     @Override
@@ -34,13 +36,13 @@ public class ServerControllerImpl implements ServerController {
     }
 
     @Override
-    public void deletePlayer(Player player) {
-        service.delete(player);
+    public void receiveMessage(Player player, MessageDto message) {
+        service.receiveMessage(player, message);
     }
 
     @Override
-    public Player buildPlayer(String player, Channel channel) {
-        return service.buildPlayer(player, channel);
+    public void deletePlayer(Player player) {
+        service.delete(player);
     }
 
 }

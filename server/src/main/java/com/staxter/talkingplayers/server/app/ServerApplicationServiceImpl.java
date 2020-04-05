@@ -1,15 +1,13 @@
 package com.staxter.talkingplayers.server.app;
 
-import com.staxter.talkingplayers.server.domain.manager.TalkManager;
 import com.staxter.talkingplayers.server.domain.model.Player;
-import com.staxter.talkingplayers.server.domain.repository.PlayerRepository;
-import com.staxter.talkingplayers.shared.domain.Channel;
+import com.staxter.talkingplayers.server.domain.service.PlayerService;
 import com.staxter.talkingplayers.shared.dto.ErrorMessage;
-import com.staxter.talkingplayers.shared.dto.ServerMessage;
+import com.staxter.talkingplayers.shared.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 /**
  * The type Server application service.
@@ -17,65 +15,42 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ServerApplicationServiceImpl implements ServerApplicationService {
 
-    private final PlayerRepository repository;
-    private final TalkManager manager;
+    private final PlayerService service;
 
     @Override
     public Player register(Player player, String name) {
-        if (exists(player.getName())) {
-            player.receiveMessage(new ServerMessage("You are registered already!"));
-            return player;
-        }
-        if (name == null || name.length() == 0) {
-            player.receiveMessage(new ErrorMessage("Name is already taken"));
-            return player;
-        }
-        if (exists(name)) {
-            player.receiveMessage(new ErrorMessage("Player already exists!"));
-            return player;
-        }
-
-        player = repository.save(player.setName(name));
-        player.receiveMessage(new ServerMessage("Welcome " + player.getName()));
-        return player;
+        return service.register(player, name);
     }
 
     @Override
     public boolean exists(String name) {
-        return repository.find(name).isPresent();
+        return service.exists(name);
     }
 
     @Override
     public void delete(Player player) {
-        repository.delete(player.getName());
+        service.delete(player);
+    }
+
+    @Override
+    public Set<String> getPlayersNames() {
+        return service.getPlayersNames();
     }
 
     @Override
     public void sendMessage(Player from, String to, String message) {
-        Optional<Player> other = repository.find(to);
+        Optional<Player> other = service.find(to);
         if (other.isEmpty()) {
-            from.receiveMessage(new ErrorMessage("Player doesn't exist " + to));
+            receiveMessage(from, new ErrorMessage("Player doesn't exist " + to));
             return;
         }
         from.sendMessage(message, other.get());
     }
 
     @Override
-    public void listPlayers(Player player) {
-        player.receiveMessage(
-                new ServerMessage(
-                        String.format("Players list: %s%s", System.lineSeparator(), getPlayers())));
-    }
-
-    private String getPlayers() {
-        return repository.listPlayers()
-                .stream()
-                .collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    @Override
-    public Player buildPlayer(String name, Channel channel) {
-        return new Player(name, channel, manager);
+    public void receiveMessage(Player player, MessageDto message) {
+        System.out.println(String.format("Message -> %s: %s", player.getName(), message.toPrint()));
+        player.receiveMessage(message);
     }
 
 }
