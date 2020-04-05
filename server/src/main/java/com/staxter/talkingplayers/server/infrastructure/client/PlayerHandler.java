@@ -1,34 +1,29 @@
 package com.staxter.talkingplayers.server.infrastructure.client;
 
 import com.staxter.talkingplayers.server.domain.model.Player;
+import com.staxter.talkingplayers.server.infrastructure.SocketWrapper;
 import com.staxter.talkingplayers.server.infrastructure.command.dto.ServerCommandDto;
 import com.staxter.talkingplayers.server.infrastructure.command.invoker.CommandInvoker;
 import com.staxter.talkingplayers.shared.dto.command.CloseCommandDto;
 import com.staxter.talkingplayers.shared.dto.command.CommandDto;
 import com.staxter.talkingplayers.shared.dto.command.HelpCommandDto;
-import com.staxter.talkingplayers.shared.infrastructure.channel.SocketChannel;
 import lombok.RequiredArgsConstructor;
 
-import java.io.BufferedInputStream;
 import java.io.EOFException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 public class PlayerHandler implements Runnable {
 
-    private final Socket socket;
+    private final SocketWrapper socket;
     private final CommandInvoker commandInvoker;
 
     private Player player;
 
     @Override
     public void run() {
-        try (var channel = new SocketChannel(new ObjectOutputStream(socket.getOutputStream()));
-             var reader = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()))) {
-
-            player = new Player(String.valueOf(socket.getPort()), channel, null);
+        try {
+            player = new Player(String.valueOf(socket.getPort()), socket.getChannel(), null);
 
             System.out.println("Player connected: " + player.getName());
             commandInvoker.processCommand(new ServerCommandDto("Welcome to the Chat!"), player);
@@ -37,7 +32,7 @@ public class PlayerHandler implements Runnable {
             Object object;
             while (true) {
                 synchronized (this) {
-                    if ((object = reader.readObject()) == null) {
+                    if ((object = socket.readObject()) == null) {
                         closePlayerSession();
                         break;
                     }
@@ -50,6 +45,12 @@ public class PlayerHandler implements Runnable {
             closePlayerSession();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
