@@ -2,12 +2,11 @@ package com.staxter.talkingplayers.server.domain.model;
 
 import com.staxter.talkingplayers.server.domain.manager.TalkManager;
 import com.staxter.talkingplayers.shared.domain.Channel;
-import com.staxter.talkingplayers.shared.dto.Message;
+import com.staxter.talkingplayers.shared.dto.MessageDto;
 import com.staxter.talkingplayers.shared.dto.PlayerMessage;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * The type Player.
@@ -16,12 +15,13 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode
 public class Player {
 
-    private final TalkManager manager;
     private final Channel channel;
 
     @Setter
-    @Accessors(chain = true)
     private String name;
+    @Setter
+    private TalkManager manager;
+
     private int sentCount = 0;
     private int receivedCount = 0;
 
@@ -53,8 +53,8 @@ public class Player {
      *
      * @param message the message
      */
-    public void receiveMessage(Message message) {
-        if(message instanceof PlayerMessage) {
+    public void receiveMessage(MessageDto message) {
+        if (message instanceof PlayerMessage) {
             incrementReceivedCount();
         }
         channel.sendMessage(message);
